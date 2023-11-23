@@ -88,6 +88,12 @@ namespace LifeSpot
                     var js = await File.ReadAllTextAsync(jsPath);
                     await context.Response.WriteAsync(js);
                 });
+                endpoints.MapGet("/City.png", async context =>
+                {
+                    var jsPath = Path.Combine(Directory.GetCurrentDirectory(), "City.png");
+                    var js = await File.ReadAllTextAsync(jsPath);
+                    await context.Response.WriteAsync(js);
+                });
             });
         }
     }
