@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 namespace LifeSpot
@@ -19,7 +20,7 @@ namespace LifeSpot
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
-
+            
             app.UseRouting();
 
             // Загружаем отдельные элементы для вставки в шаблон: боковое меню и футер
@@ -88,11 +89,10 @@ namespace LifeSpot
                     var js = await File.ReadAllTextAsync(jsPath);
                     await context.Response.WriteAsync(js);
                 });
-                endpoints.MapGet("/City.png", async context =>
+                app.UseStaticFiles(new StaticFileOptions
                 {
-                    var jsPath = Path.Combine(Directory.GetCurrentDirectory(), "City.png");
-                    var js = await File.ReadAllTextAsync(jsPath);
-                    await context.Response.WriteAsync(js);
+                    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Static", "Images")),
+                    RequestPath = "/Static/Images"
                 });
             });
         }
